@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARIA — AIOps Chatbot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────────── -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">🤖</div>
+    <span>ARIA <span class="logo-sub">AIOps Intelligence Platform</span></span>
+  </div>
+  <div class="status-badge" id="statusBadge">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Connecting…</span>
+  </div>
+</header>
+
+<!-- ── Navigation ──────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-tab active" data-tab="chat">💬 AI Chat</div>
+  <div class="nav-tab" data-tab="analyzer">🔍 Incident Analyzer</div>
+  <div class="nav-tab" data-tab="samples">📋 Sample Incidents</div>
+</nav>
+
+<!-- ── Main ────────────────────────────────────────────────────── -->
+<main class="main">
+
+  <!-- Chat Tab -->
+  <section class="tab-panel active" id="tab-chat">
+    <div class="chat-wrapper">
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg assistant">
+          <div class="msg-avatar">🤖</div>
+          <div class="msg-bubble">
+            Hello! I'm ARIA, your AI Operations assistant. I can help you with:
+            <br><br>
+            • <strong>IT troubleshooting</strong> — network, hardware, software, security issues<br>
+            • <strong>Incident guidance</strong> — best practices and escalation paths<br>
+            • <strong>ITSM questions</strong> — process, priority, and assignment advice<br>
+            <br>
+            What can I help you with today?
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-actions">
+        <button class="btn btn-ghost" id="clearChatBtn" style="font-size:12px;padding:5px 12px;">Clear conversation</button>
+      </div>
+
+      <div class="chat-input-row">
+        <textarea
+          class="chat-input"
+          id="chatInput"
+          placeholder="Ask about an IT issue, incident, or troubleshooting step…"
+          rows="1"
+        ></textarea>
+        <button class="btn btn-primary" id="sendBtn">Send</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Incident Analyzer Tab -->
+  <section class="tab-panel" id="tab-analyzer">
+    <div class="analyzer-wrapper">
+
+      <!-- Left: input form -->
+      <div class="analyzer-left">
+        <div class="form-group">
+          <label class="form-label">Incident Title</label>
+          <input class="form-input" id="incTitle" type="text" placeholder="e.g. VPN gateway down — remote workers affected" maxlength="200" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" id="incDescription" placeholder="Describe the incident in detail — symptoms, affected systems, time of occurrence, number of users affected…"></textarea>
+        </div>
+
+        <div class="form-group" style="max-width:180px">
+          <label class="form-label">Affected Users</label>
+          <input class="form-input" id="incUsers" type="number" value="1" min="0" max="100000" />
+        </div>
+
+        <button class="btn btn-primary" id="analyzeBtn" style="align-self:flex-start;padding:10px 24px;">
+          Analyze Incident
+        </button>
+
+        <div class="or-divider">or select a sample</div>
+
+        <div class="form-group">
+          <label class="form-label">Load Sample Incident</label>
+          <select class="form-select" id="sampleSelect">
+            <option value="">— Choose a sample —</option>
+          </select>
+        </div>
+
+        <button class="btn btn-ghost" id="loadSampleBtn" style="align-self:flex-start">
+          Load &amp; Analyze Sample
+        </button>
+      </div>
+
+      <!-- Right: result -->
+      <div class="analyzer-right" id="analyzerResult">
+        <div class="result-placeholder">
+          <div class="result-placeholder-icon">📊</div>
+          <div>
+            <strong>No incident analyzed yet</strong><br>
+            <span style="font-size:12px">Fill in the form or select a sample incident to get started.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Samples Tab -->
+  <section class="tab-panel" id="tab-samples">
+    <div class="samples-wrapper">
+      <div class="samples-grid" id="samplesGrid">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

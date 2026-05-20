@@ -1,0 +1,72 @@
+[
+  {
+    "id": "INC-001",
+    "title": "Core network switch failure — Building A",
+    "description": "The core distribution switch in Building A became unresponsive at 09:14. Approximately 200 users on floors 3–6 have lost all network connectivity, including access to internal applications, file shares, and internet. The network team has confirmed the switch is not responding to management pings. A power cycle has been attempted with no recovery. Redundant uplink failover did not engage as expected.",
+    "affected_users": 200,
+    "category_hint": "Network"
+  },
+  {
+    "id": "INC-002",
+    "title": "VPN gateway — remote workers unable to connect",
+    "description": "Since approximately 07:30, remote employees are unable to establish VPN connections. The error message displayed is 'Authentication server unreachable'. The Cisco AnyConnect client times out after 30 seconds. Local office workers are unaffected. The VPN gateway is showing high CPU utilisation in the monitoring dashboard. Approximately 85 remote workers are affected.",
+    "affected_users": 85,
+    "category_hint": "Network"
+  },
+  {
+    "id": "INC-003",
+    "title": "Email server — 50% delivery delay across organisation",
+    "description": "Reported at 10:45. Emails sent internally are experiencing delivery delays of 15–45 minutes. External emails appear to be sending normally. The Exchange mail queue has grown to over 4,000 messages. Mail flow logs show the Transport service is processing at approximately 50% of its normal throughput. The issue started after a Windows security patch was applied to the mail servers last night.",
+    "affected_users": 500,
+    "category_hint": "Email/Communication"
+  },
+  {
+    "id": "INC-004",
+    "title": "CRITICAL: Suspected ransomware activity on finance workstations",
+    "description": "At 14:22, the SOC received alerts for suspicious file encryption activity on three workstations in the Finance department. File extensions are being changed to .locked. The affected machines are FINWS-041, FINWS-042, and FINWS-043. Users on these machines have been instructed to stop working. Network traffic analysis shows unusual outbound connections to unknown IP addresses on port 443. The incident may be spreading — two additional machines have shown similar behaviour in the last 10 minutes.",
+    "affected_users": 5,
+    "category_hint": "Security"
+  },
+  {
+    "id": "INC-005",
+    "title": "Production database — connection pool exhausted, app throwing errors",
+    "description": "The ERP application has been throwing 'Unable to acquire database connection' errors since 11:00. The PostgreSQL connection pool is at maximum capacity (500/500 connections). Application logs show long-running queries from the reporting module that are not releasing connections. Approximately 120 users of the ERP system are affected, unable to submit or retrieve orders. A recent deployment of the reporting module v2.3.1 went live yesterday at 18:00.",
+    "affected_users": 120,
+    "category_hint": "Database"
+  },
+  {
+    "id": "INC-006",
+    "title": "Laptop will not boot — black screen after Windows update",
+    "description": "User John Tan (IT-LT-094) reports that his laptop displays a black screen after applying Windows 11 cumulative update KB5031455 last night. The machine powers on, the manufacturer logo appears, then the screen goes black with no login prompt. The user has tried a hard reset three times with the same result. The laptop is a Dell Latitude 5540, 16GB RAM. The user needs access to client presentations for a 14:00 meeting today.",
+    "affected_users": 1,
+    "category_hint": "Hardware"
+  },
+  {
+    "id": "INC-007",
+    "title": "Shared network drive — user locked out of Finance folder",
+    "description": "Sarah Lim from Accounts Payable reports she can no longer access the \\\\fileserver01\\Finance\\AP folder she has been using for two years. She receives 'Access Denied' when attempting to open files. Her colleague in the same team can still access the folder normally. Sarah's account shows no lockout in Active Directory. The permissions on the folder were reviewed last Friday by the IT admin team as part of a quarterly access review.",
+    "affected_users": 1,
+    "category_hint": "Access/Authentication"
+  },
+  {
+    "id": "INC-008",
+    "title": "Cloud VM cluster — production workload CPU at 95%, response times degraded",
+    "description": "The AWS EC2 auto-scaling group for the customer portal (prod-webapp-asg) is showing sustained CPU utilisation of 92–98% across all 6 instances for the past 40 minutes. The auto-scaler has not triggered additional instances. Customer-facing API response times have increased from 180ms average to over 4,200ms. CloudWatch metrics show the spike correlates with a marketing email campaign sent at 13:00 that has driven a 3x increase in concurrent users.",
+    "affected_users": 1500,
+    "category_hint": "Cloud/Infrastructure"
+  },
+  {
+    "id": "INC-009",
+    "title": "User stuck in password reset loop — cannot authenticate after reset",
+    "description": "David Chen completed a self-service password reset via the portal at 08:15 but is still unable to log into his Windows workstation or Office 365. The new password works on the self-service portal but is rejected everywhere else with 'Invalid credentials'. His account shows a successful password change in Azure AD audit logs. The previous password also no longer works. He has been locked out of all systems for over 2 hours and has a client call at 10:30.",
+    "affected_users": 1,
+    "category_hint": "Access/Authentication"
+  },
+  {
+    "id": "INC-010",
+    "title": "Floor printer offline — 3rd floor HP LaserJet not responding",
+    "description": "The shared HP LaserJet Pro M404 printer on Level 3 (PRNT-L3-001) has been showing as offline since this morning. Users attempting to print receive 'Printer not available' errors. The printer's power light is on and the control panel shows 'Ready'. A test page from the printer itself prints successfully. The printer's IP address (192.168.10.45) is not responding to pings from workstations. The network port on the wall was recently patched during last week's office refit.",
+    "affected_users": 25,
+    "category_hint": "Hardware"
+  }
+]
