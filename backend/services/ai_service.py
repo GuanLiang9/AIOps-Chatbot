@@ -22,7 +22,7 @@ class OllamaAIService:
             messages=full_messages,
             options={"temperature": 0.7},
         )
-        return response["message"]["content"]
+        return response.message.content
 
     def structured_completion(self, prompt: str, system: str) -> dict:
         import ollama
@@ -36,7 +36,7 @@ class OllamaAIService:
             format="json",
             options={"temperature": 0.2},
         )
-        raw = response["message"]["content"]
+        raw = response.message.content
         return json.loads(raw)
 
 
@@ -53,20 +53,10 @@ class MockAIService:
     ]
 
     _MOCK_ANALYSIS = {
-        "network": {
-            "category": "Network",
-            "assignment_group": "Network Operations",
-            "troubleshooting_steps": [
-                "Check physical network connections and switch port status",
-                "Ping gateway and DNS servers to isolate connectivity scope",
-                "Review network switch logs for error or flap events",
-                "Verify VLAN configuration and routing tables",
-                "Escalate to ISP if external connectivity is affected",
-            ],
-        },
         "security": {
             "category": "Security",
             "assignment_group": "Security Operations Center",
+            "summary": "Security incident detected with indicators of potential compromise. Immediate containment is critical — the affected system must be isolated from the network before any further investigation. The Security Operations Center must be engaged at once to initiate the incident response process and preserve forensic evidence.",
             "troubleshooting_steps": [
                 "Immediately isolate affected systems from the network",
                 "Preserve system state — do not power off before forensic capture",
@@ -75,9 +65,34 @@ class MockAIService:
                 "Follow the organisation's IR runbook for containment and eradication",
             ],
         },
+        "network": {
+            "category": "Network",
+            "assignment_group": "Network Operations",
+            "summary": "Network infrastructure incident causing connectivity disruption across one or more segments. Physical and logical layer investigation is required to isolate the failure point. Network Operations team should begin with switch port status and routing table verification while monitoring for additional affected users.",
+            "troubleshooting_steps": [
+                "Check physical network connections and switch port status",
+                "Ping gateway and DNS servers to isolate connectivity scope",
+                "Review network switch logs for error or flap events",
+                "Verify VLAN configuration and routing tables",
+                "Escalate to ISP if external connectivity is affected",
+            ],
+        },
+        "email": {
+            "category": "Email/Communication",
+            "assignment_group": "Application Support",
+            "summary": "Email service degradation detected affecting user communication capability. Exchange or SMTP infrastructure requires immediate health assessment. Application Support team should prioritise mail queue status, server resource utilisation, and recent configuration changes to identify and remediate the root cause.",
+            "troubleshooting_steps": [
+                "Check Exchange or mail server health dashboard and event logs",
+                "Review mail queue status and identify any delivery failures",
+                "Verify SMTP relay configuration and outbound connectivity",
+                "Check server resource utilisation — CPU, memory, and disk space",
+                "Confirm DNS MX records and email routing configuration are intact",
+            ],
+        },
         "default": {
             "category": "Software/Application",
             "assignment_group": "Application Support",
+            "summary": "Application or service incident causing degraded availability or unexpected behaviour. Initial investigation should focus on recent deployment activity and error log analysis. Application Support team to reproduce the issue in a controlled environment and escalate to development if a code defect is suspected.",
             "troubleshooting_steps": [
                 "Collect and review application error logs",
                 "Reproduce the issue in a test environment",
@@ -87,6 +102,8 @@ class MockAIService:
             ],
         },
     }
+
+    _CONFIDENCE = {"P1": 0.91, "P2": 0.82, "P3": 0.68, "P4": 0.57}
 
     def chat_completion(self, messages: list[dict], system: str) -> str:
         last = messages[-1]["content"].lower() if messages else ""
@@ -102,27 +119,26 @@ class MockAIService:
         p = prompt.lower()
         if any(w in p for w in ["ransomware", "breach", "malware", "attack", "hack"]):
             profile = self._MOCK_ANALYSIS["security"]
-            severity, label, users, eta = "P1", "Critical", 50, "Immediate — follow IR runbook"
-        elif any(w in p for w in ["outage", "down", "unreachable", "offline", "switch", "router"]):
+            severity, label, eta = "P1", "Critical", "Immediate — follow IR runbook"
+        elif any(w in p for w in ["email", "exchange", "smtp", "mail"]):
+            profile = self._MOCK_ANALYSIS["email"]
+            severity, label, eta = "P2", "High", "2-4 hours"
+        elif any(w in p for w in ["outage", "down", "unreachable", "offline", "switch", "router", "network", "vpn"]):
             profile = self._MOCK_ANALYSIS["network"]
-            severity, label, users, eta = "P2", "High", 30, "2-4 hours"
+            severity, label, eta = "P2", "High", "2-4 hours"
         else:
             profile = self._MOCK_ANALYSIS["default"]
-            severity, label, users, eta = "P3", "Medium", 5, "4–8 hours"
+            severity, label, eta = "P3", "Medium", "4–8 hours"
 
         return {
-            "summary": (
-                "This incident has been automatically triaged by the AIOps system. "
-                "The description indicates a potential service disruption requiring prompt attention. "
-                "Immediate investigation is recommended following the steps below."
-            ),
+            "summary": profile["summary"],
             "category": profile["category"],
             "severity": severity,
             "severity_label": label,
             "assignment_group": profile["assignment_group"],
             "troubleshooting_steps": profile["troubleshooting_steps"],
             "estimated_resolution_time": eta,
-            "confidence_score": 0.72,
+            "confidence_score": self._CONFIDENCE[severity],
         }
 
 

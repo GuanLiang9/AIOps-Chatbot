@@ -14,6 +14,7 @@ def get_logger(name: str) -> logging.Logger:
         )
         handler.setFormatter(formatter)
         logger.addHandler(handler)
+        logger.propagate = False
 
     logger.setLevel(getattr(logging, settings.LOG_LEVEL.upper(), logging.INFO))
     return logger
