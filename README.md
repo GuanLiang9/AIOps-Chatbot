@@ -160,3 +160,6 @@ Change model: edit `OLLAMA_MODEL` in `.env`.
 - **Trend dashboard** — charts for incident volume, severity distribution
 - **LangSmith tracing** — observability for LLM calls
 - **Multi-provider support** — swap Ollama for cloud provider via env var
+
+---
+The current implementation is a proof-of-concept using simulated incident telemetry and static alert datasets. The architecture is designed to later support real-time integrations with observability and cloud monitoring platforms such as CloudWatch, Grafana, and Prometheus.
